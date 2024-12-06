@@ -1,0 +1,2 @@
+program Projekdiskonbelanja;
+uses crt;
