@@ -12,40 +12,45 @@ type
 var
     Keranjang: array of TBarang;
     jumlahBarang: integer;
-    pilihan, total, diskon: longint;
+    pilihan, total, diskon15, diskon5, totalDiskon, totalJumlahBarang: longint;
     i: integer;
 
 procedure TampilanHasilScan();
 begin
     clrscr;
-    clrscr;
     writeln('________________ Program Belanja :v _______________________');
     writeln('Barang yang telah Anda beli:');
+    totalJumlahBarang := 0;
     for i := 0 to jumlahBarang - 1 do
     begin
         writeln('Barang ', i + 1, ': ', Keranjang[i].nama, 
                 ' - Jumlah: ', Keranjang[i].Jumlah, 
                 ' - Harga Satuan: Rp', Keranjang[i].harga,
                 ' - Subtotal: Rp', Keranjang[i].subtotal);
+        totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
     end;
     writeln;
 
     writeln('Total Harga Belanjaan: Rp ', total);
 
-    if total > 500000 then
-    begin
-        diskon := total * 15 div 100;
-        writeln('Diskon 15%: Rp', diskon);
-        writeln('Harga Setelah Diskon: Rp', total - diskon);
-    end
-    else
-    begin
-        diskon := 0;
-        writeln('Diskon: Tidak ada');
-        writeln('Harga Akhir: Rp', total);
-    end;
+    // Menghitung diskon
+    diskon15 := 0;
+    diskon5 := 0;
 
-    writeln('Total Barang Belanjaan: ', jumlahBarang);
+    if total > 500000 then
+        diskon15 := total * 15 div 100;
+    
+    if totalJumlahBarang >= 5 then
+        diskon5 := total * 5 div 100;
+
+    totalDiskon := diskon15 + diskon5;
+
+    writeln('Diskon 15% (Jika total > Rp500.000): Rp', diskon15);
+    writeln('Diskon 5% (Jika jumlah barang >= 5): Rp', diskon5);
+    writeln('Total Diskon: Rp', totalDiskon);
+    writeln('Harga Setelah Diskon: Rp', total - totalDiskon);
+
+    writeln('Total Barang Belanjaan: ', totalJumlahBarang);
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
     readln;
@@ -82,19 +87,6 @@ begin
         total := total + Keranjang[i].subtotal;
     end;
 
-    // Menampilkan daftar barang yang telah dimasukkan
-    clrscr;
-    writeln('________________ Program Belanja :v _______________________');
-    writeln('Barang yang telah Anda masukkan:');
-    for i := 0 to jumlahBarang - 1 do
-    begin
-        writeln('Barang ', i + 1, ': ', Keranjang[i].nama, 
-                ' - Jumlah: ', Keranjang[i].Jumlah, 
-                ' - Harga Satuan: Rp', Keranjang[i].harga,
-                ' - Subtotal: Rp', Keranjang[i].subtotal);
-    end;
-    writeln;
-
     TampilanHasilScan();
 end;
 
@@ -109,39 +101,45 @@ begin
         writeln('Belum ada barang yang discan.')
     else
     begin
+        totalJumlahBarang := 0;
         for i := 0 to jumlahBarang - 1 do
         begin
             writeln('Barang ', i + 1 , ': ', Keranjang[i].nama, 
                     ' - Jumlah: ', Keranjang[i].Jumlah, 
                     ' - Harga Satuan: Rp', Keranjang[i].harga,
                     ' - Subtotal: Rp', Keranjang[i].subtotal);
+            totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
         end;
         writeln;
         writeln('Total Harga: Rp', total);
 
-        
-            // Cek apakah mendapatkan diskon
+        // Menghitung diskon
+        diskon15 := 0;
+        diskon5 := 0;
+
         if total > 500000 then
-        begin
-            diskon := total * 15 div 100;
-            writeln('Diskon 15%: Rp', diskon);
-            writeln('Harga Setelah Diskon: Rp', total - diskon);
-        end
-        else
-        begin
-            writeln('Diskon: Tidak ada');
-            writeln('Harga Akhir: Rp', total);
-        end;
+            diskon15 := total * 15 div 100;
+        
+        if totalJumlahBarang >= 5 then
+            diskon5 := total * 5 div 100;
+
+        totalDiskon := diskon15 + diskon5;
+
+        writeln('Diskon 15% (Jika total > Rp500.000): Rp', diskon15);
+        writeln('Diskon 5% (Jika jumlah barang >= 5): Rp', diskon5);
+        writeln('Total Diskon: Rp', totalDiskon);
+        writeln('Harga Setelah Diskon: Rp', total - totalDiskon);
     end;
 
     writeln;
-    write('Tekan Enter untuk kembali ke menu utama');
+    write('Tekan Enter untuk kembali ke menu utama...');
     readln;
 end;
 
 begin
     jumlahBarang := 0; 
     total := 0;
+    totalJumlahBarang := 0;
     repeat
         clrscr;
         writeln('________________ Program Belanja :v _______________________');
