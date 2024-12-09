@@ -15,6 +15,7 @@ var
     pilihan, total, diskon15, diskon5, totalDiskon, totalJumlahBarang: longint;
     i: integer;
 
+// Menampilkan hasil scan belanjaan, termasuk diskon dan total harga
 procedure TampilanHasilScan();
 begin
     clrscr;
@@ -34,7 +35,7 @@ begin
                 Keranjang[i].Jumlah:6, ' | ', 
                 Keranjang[i].harga:12, ' | ', 
                 Keranjang[i].subtotal:9, ' |');
-        totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
+        totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah; // Menambah jumlah barang total
     end;
 
     writeln('------------------------------------------------------------');
@@ -47,12 +48,12 @@ begin
     diskon5 := 0;
 
     if total > 500000 then
-        diskon15 := total * 15 div 100;
+        diskon15 := total * 15 div 100; // Diskon 15% untuk total harga > Rp500.000
     
     if totalJumlahBarang >= 5 then
-        diskon5 := total * 5 div 100;
+        diskon5 := total * 5 div 100; // Diskon 5% untuk jumlah barang >= 5
 
-    totalDiskon := diskon15 + diskon5;
+    totalDiskon := diskon15 + diskon5; // Total semua diskon
 
     // Header tabel untuk perhitungan diskon
     writeln('------------------------------------------------------------');
@@ -65,12 +66,13 @@ begin
     writeln('------------------------------------------------------------');
     writeln;
 
-    writeln('Total Barang Belanjaan: ', totalJumlahBarang);
+    writeln('Total Barang Belanjaan: ', totalJumlahBarang); // Total jumlah barang
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
     readln;
 end;
 
+// Proses scan barang, termasuk input jumlah, nama, harga, dan validasi harga
 procedure TampilanScanBarang();
 begin
     clrscr;
@@ -97,13 +99,14 @@ begin
         write('Masukkan Harga Barang: ');
         readln(Keranjang[i].harga);
 
+    // Validasi harga barang
         if Keranjang[i].harga < 100 then 
         begin
             write('Mohon Masukkan Harga Barang dengan benar ');
             writeln;
             write('Tekan Enter untuk kembali ke menu utama...');
             readln;
-            exit;
+            exit; // Keluar jika harga tidak valid
         end
         else
         begin
@@ -115,9 +118,10 @@ begin
         end;
     end;
 
-    TampilanHasilScan();
+    TampilanHasilScan(); // Panggil prosedur untuk menampilkan hasil scan
 end;
 
+// Menampilkan riwayat belanja
 procedure TampilanRiwayatBelanja();
 begin
     clrscr;
@@ -180,12 +184,13 @@ begin
     readln;
 end;
 
+// Membersihkan seluruh riwayat belanja
 procedure BersihkanRiwayatBelanja();
 begin
     jumlahBarang := 0;
     total := 0;
     totalJumlahBarang := 0;
-    setlength(Keranjang, 0);
+    setlength(Keranjang, 0); // Mengosongkan array
     writeln('Riwayat belanja telah dibersihkan.');
     writeln('Tekan Enter untuk kembali ke menu utama...');
     readln;
