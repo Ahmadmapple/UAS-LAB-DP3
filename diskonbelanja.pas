@@ -21,14 +21,23 @@ begin
     writeln('________________ HASIL SCAN BELANJAAN :v _______________________');
     writeln('Barang yang telah Anda beli:');
     totalJumlahBarang := 0;
+
+   // Header tabel untuk barang
+    writeln('------------------------------------------------------------');
+    writeln('| No | Nama Barang      | Jumlah | Harga Satuan | Subtotal |');
+    writeln('------------------------------------------------------------');
+
     for i := 0 to jumlahBarang - 1 do
     begin
-        writeln('Barang ', i + 1, ': ', Keranjang[i].nama, 
-                ' - Jumlah: ', Keranjang[i].Jumlah, 
-                ' - Harga Satuan: Rp', Keranjang[i].harga,
-                ' - Subtotal: Rp', Keranjang[i].subtotal);
+        writeln('| ', i + 1:2, ' | ', 
+                copy(Keranjang[i].nama, 1, 15):15, ' | ', 
+                Keranjang[i].Jumlah:6, ' | ', 
+                Keranjang[i].harga:12, ' | ', 
+                Keranjang[i].subtotal:9, ' |');
         totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
     end;
+
+    writeln('------------------------------------------------------------');
     writeln;
 
     writeln('Total Harga Belanjaan: Rp ', total);
@@ -45,8 +54,16 @@ begin
 
     totalDiskon := diskon15 + diskon5;
 
-    writeln('Total Diskon: Rp', totalDiskon);
-    writeln('Harga Setelah Diskon: Rp', total - totalDiskon);
+    // Header tabel untuk perhitungan diskon
+    writeln('------------------------------------------------------------');
+    writeln('| Diskon           | Jumlah Diskon | Harga Setelah Diskon |');
+    writeln('------------------------------------------------------------');
+    writeln('| Diskon 15%       | Rp ', diskon15:12, ' | Rp ', total - diskon15:15, ' |');
+    writeln('| Diskon 5%        | Rp ', diskon5:12, ' | Rp ', total - diskon5:15, ' |');
+    writeln('------------------------------------------------------------');
+    writeln('| Total Diskon     | Rp ', totalDiskon:12, ' | Rp ', total - totalDiskon:15, ' |');
+    writeln('------------------------------------------------------------');
+    writeln;
 
     writeln('Total Barang Belanjaan: ', totalJumlahBarang);
     writeln;
@@ -113,14 +130,23 @@ begin
     else
     begin
         totalJumlahBarang := 0;
+
+        // Header tabel untuk barang
+        writeln('------------------------------------------------------------');
+        writeln('| No | Nama Barang      | Jumlah | Harga Satuan | Subtotal |');
+        writeln('------------------------------------------------------------');
+
         for i := 0 to jumlahBarang - 1 do
         begin
-            writeln('Barang ', i + 1 , ': ', Keranjang[i].nama, 
-                    ' - Jumlah: ', Keranjang[i].Jumlah, 
-                    ' - Harga Satuan: Rp', Keranjang[i].harga,
-                    ' - Subtotal: Rp', Keranjang[i].subtotal);
+            writeln('| ', i + 1:2, ' | ', 
+                    copy(Keranjang[i].nama, 1, 15):15, ' | ', 
+                    Keranjang[i].Jumlah:6, ' | ', 
+                    Keranjang[i].harga:12, ' | ', 
+                    Keranjang[i].subtotal:9, ' |');
             totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
         end;
+
+        writeln('------------------------------------------------------------');
         writeln;
         writeln('Total Harga: Rp', total);
 
@@ -136,12 +162,19 @@ begin
 
         totalDiskon := diskon15 + diskon5;
 
-        writeln('Diskon 15% (Jika total > Rp500.000): Rp', diskon15);
-        writeln('Diskon 5% (Jika jumlah barang >= 5): Rp', diskon5);
-        writeln('Total Diskon: Rp', totalDiskon);
-        writeln('Harga Setelah Diskon: Rp', total - totalDiskon);
+         // Header tabel untuk perhitungan diskon
+        writeln('------------------------------------------------------------');
+        writeln('| Diskon           | Jumlah Diskon | Harga Setelah Diskon |');
+        writeln('------------------------------------------------------------');
+        writeln('| Diskon 15%       | Rp ', diskon15:12, ' | Rp ', total - diskon15:15, ' |');
+        writeln('| Diskon 5%        | Rp ', diskon5:12, ' | Rp ', total - diskon5:15, ' |');
+        writeln('------------------------------------------------------------');
+        writeln('| Total Diskon     | Rp ', totalDiskon:12, ' | Rp ', total - totalDiskon:15, ' |');
+        writeln('------------------------------------------------------------');
+        writeln;
     end;
 
+    writeln('Total Barang Belanjaan: ', totalJumlahBarang);
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
     readln;
