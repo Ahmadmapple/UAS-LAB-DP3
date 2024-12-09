@@ -45,8 +45,6 @@ begin
 
     totalDiskon := diskon15 + diskon5;
 
-    writeln('Diskon 15% (Jika total > Rp500.000): Rp', diskon15);
-    writeln('Diskon 5% (Jika jumlah barang >= 5): Rp', diskon5);
     writeln('Total Diskon: Rp', totalDiskon);
     writeln('Harga Setelah Diskon: Rp', total - totalDiskon);
 
@@ -61,6 +59,8 @@ begin
     clrscr;
     writeln('________________ Program Belanja :v _______________________');
     writeln;
+    writeln('Diskon 15% Jika total harga > Rp500.000');
+    writeln('Diskon 5% Jika jumlah barang >= 5');
     write('Masukkan Jumlah Barang Belanjaan (Input -1 untuk ke menu utama): ');
     readln(jumlahBarang);
 
