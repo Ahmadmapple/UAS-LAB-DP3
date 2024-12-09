@@ -202,8 +202,9 @@ begin
     totalJumlahBarang := 0;
     repeat
         clrscr;
-        writeln('________________ PROGRAM BELANJA :v _______________________');
+        writeln('__________________ SELAMAT DATANG DI AMBAMART _____________________');
         writeln;
+        writeln('Apa yang ingin anda lakukan ?');
         writeln('1. SCAN BARANG BELANJAAN');
         writeln('2. RIWAYAT BELANJA');
         writeln('3. BERSIHKAN RIWAYAT BELANJA');
@@ -217,7 +218,7 @@ begin
             3: BersihkanRiwayatBelanja();
             4: 
             begin
-                writeln('Makasih Telah Menggunakan Program Ini.');
+                writeln('Terima Kasih Telah Berbelanja di Ambamart.');
                 halt;
             end;
             else
