@@ -12,7 +12,7 @@ type
 var
     Keranjang: array of TBarang;
     jumlahBarang: integer;
-    pilihan, total: longint;
+    pilihan, total, diskon: longint;
     i: integer;
 
 procedure TampilanHasilScan();
@@ -31,6 +31,20 @@ begin
     writeln;
 
     writeln('Total Harga Belanjaan: Rp ', total);
+
+    if total > 500000 then
+    begin
+        diskon := total * 15 div 100;
+        writeln('Diskon 15%: Rp', diskon);
+        writeln('Harga Setelah Diskon: Rp', total - diskon);
+    end
+    else
+    begin
+        diskon := 0;
+        writeln('Diskon: Tidak ada');
+        writeln('Harga Akhir: Rp', total);
+    end;
+
     writeln('Total Barang Belanjaan: ', jumlahBarang);
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
@@ -104,6 +118,20 @@ begin
         end;
         writeln;
         writeln('Total Harga: Rp', total);
+
+        
+            // Cek apakah mendapatkan diskon
+        if total > 500000 then
+        begin
+            diskon := total * 15 div 100;
+            writeln('Diskon 15%: Rp', diskon);
+            writeln('Harga Setelah Diskon: Rp', total - diskon);
+        end
+        else
+        begin
+            writeln('Diskon: Tidak ada');
+            writeln('Harga Akhir: Rp', total);
+        end;
     end;
 
     writeln;
