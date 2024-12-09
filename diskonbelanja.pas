@@ -80,11 +80,22 @@ begin
         write('Masukkan Harga Barang: ');
         readln(Keranjang[i].harga);
 
+        if Keranjang[i].harga < 100 then 
+        begin
+            write('Mohon Masukkan Harga Barang dengan benar ');
+            writeln;
+            write('Tekan Enter untuk kembali ke menu utama...');
+            readln;
+            exit;
+        end
+        else
+        begin
         // Menghitung subtotal
         Keranjang[i].subtotal := Keranjang[i].harga * Keranjang[i].Jumlah;
 
         // Menambahkan ke total
         total := total + Keranjang[i].subtotal;
+        end;
     end;
 
     TampilanHasilScan();
