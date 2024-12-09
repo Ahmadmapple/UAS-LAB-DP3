@@ -18,7 +18,7 @@ var
 procedure TampilanHasilScan();
 begin
     clrscr;
-    writeln('________________ Program Belanja :v _______________________');
+    writeln('________________ HASIL SCAN BELANJAAN :v _______________________');
     writeln('Barang yang telah Anda beli:');
     totalJumlahBarang := 0;
     for i := 0 to jumlahBarang - 1 do
@@ -57,7 +57,7 @@ end;
 procedure TampilanScanBarang();
 begin
     clrscr;
-    writeln('________________ Program Belanja :v _______________________');
+    writeln('________________ SCAN BARANG ;v _______________________');
     writeln;
     writeln('Diskon 15% Jika total harga > Rp500.000');
     writeln('Diskon 5% Jika jumlah barang >= 5');
@@ -104,7 +104,7 @@ end;
 procedure TampilanRiwayatBelanja();
 begin
     clrscr;
-    writeln('________________ Program Belanja :v _______________________');
+    writeln('________________ RIWAYAT BELANJA :v _______________________');
     writeln('Riwayat Belanja Anda:');
     writeln;
 
@@ -164,7 +164,7 @@ begin
     totalJumlahBarang := 0;
     repeat
         clrscr;
-        writeln('________________ Program Belanja :v _______________________');
+        writeln('________________ PROGRAM BELANJA :v _______________________');
         writeln;
         writeln('1. SCAN BARANG BELANJAAN');
         writeln('2. RIWAYAT BELANJA');
