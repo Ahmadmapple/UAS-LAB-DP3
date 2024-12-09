@@ -147,6 +147,17 @@ begin
     readln;
 end;
 
+procedure BersihkanRiwayatBelanja();
+begin
+    jumlahBarang := 0;
+    total := 0;
+    totalJumlahBarang := 0;
+    setlength(Keranjang, 0);
+    writeln('Riwayat belanja telah dibersihkan.');
+    writeln('Tekan Enter untuk kembali ke menu utama...');
+    readln;
+end;
+
 begin
     jumlahBarang := 0; 
     total := 0;
@@ -157,14 +168,16 @@ begin
         writeln;
         writeln('1. SCAN BARANG BELANJAAN');
         writeln('2. RIWAYAT BELANJA');
-        writeln('3. KELUAR');
-        write('Masukkan Pilihan Anda (1-3): ');
+        writeln('3. BERSIHKAN RIWAYAT BELANJA');
+        writeln('4. KELUAR');
+        write('Masukkan Pilihan Anda (1-4): ');
         readln(pilihan);
 
         case pilihan of
             1: TampilanScanBarang();
             2: TampilanRiwayatBelanja();
-            3: 
+            3: BersihkanRiwayatBelanja();
+            4: 
             begin
                 writeln('Makasih Telah Menggunakan Program Ini.');
                 halt;
@@ -173,5 +186,5 @@ begin
                 writeln('Pilihan tidak valid. Tekan Enter untuk mencoba lagi...');
                 readln;
         end;
-    until pilihan = 3;    
+    until pilihan = 4;    
 end.
