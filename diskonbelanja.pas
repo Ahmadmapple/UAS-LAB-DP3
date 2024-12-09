@@ -1,4 +1,4 @@
-program Projekdiskonbelanja;
+program Projekbelanja;
 uses crt;
 
 type
@@ -6,6 +6,7 @@ type
         nama: string;
         Jumlah: integer;
         harga: longint;
+        subtotal: longint;
     end;
 
 var
@@ -17,8 +18,19 @@ var
 procedure TampilanHasilScan();
 begin
     clrscr;
-    writeln('________________ Program Belanja & Diskon :v _______________________');
-    writeln('Total Harga Belanjaan: ', total);
+    clrscr;
+    writeln('________________ Program Belanja :v _______________________');
+    writeln('Barang yang telah Anda beli:');
+    for i := 0 to jumlahBarang - 1 do
+    begin
+        writeln('Barang ', i + 1, ': ', Keranjang[i].nama, 
+                ' - Jumlah: ', Keranjang[i].Jumlah, 
+                ' - Harga Satuan: Rp', Keranjang[i].harga,
+                ' - Subtotal: Rp', Keranjang[i].subtotal);
+    end;
+    writeln;
+
+    writeln('Total Harga Belanjaan: Rp ', total);
     writeln('Total Barang Belanjaan: ', jumlahBarang);
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
@@ -28,7 +40,7 @@ end;
 procedure TampilanScanBarang();
 begin
     clrscr;
-    writeln('________________ Program Belanja & Diskon :v _______________________');
+    writeln('________________ Program Belanja :v _______________________');
     writeln;
     write('Masukkan Jumlah Barang Belanjaan (Input -1 untuk ke menu utama): ');
     readln(jumlahBarang);
@@ -39,17 +51,35 @@ begin
     setlength(Keranjang, jumlahBarang);
     total := 0;
 
-    for i := 1 to jumlahBarang do
+    for i := 0 to jumlahBarang - 1 do
     begin
-        writeln('Barang ke-', i);
+        writeln('Barang ke-', i + 1);
         write('Masukkan Nama Barang: ');
         readln(Keranjang[i].nama);
         write('Masukkan Jumlah Barang: ');
         readln(Keranjang[i].Jumlah);
         write('Masukkan Harga Barang: ');
-        readln(Keranjang[i].harga); 
-        total := total + (Keranjang[i].harga * Keranjang[i].Jumlah);
+        readln(Keranjang[i].harga);
+
+        // Menghitung subtotal
+        Keranjang[i].subtotal := Keranjang[i].harga * Keranjang[i].Jumlah;
+
+        // Menambahkan ke total
+        total := total + Keranjang[i].subtotal;
     end;
+
+    // Menampilkan daftar barang yang telah dimasukkan
+    clrscr;
+    writeln('________________ Program Belanja :v _______________________');
+    writeln('Barang yang telah Anda masukkan:');
+    for i := 0 to jumlahBarang - 1 do
+    begin
+        writeln('Barang ', i + 1, ': ', Keranjang[i].nama, 
+                ' - Jumlah: ', Keranjang[i].Jumlah, 
+                ' - Harga Satuan: Rp', Keranjang[i].harga,
+                ' - Subtotal: Rp', Keranjang[i].subtotal);
+    end;
+    writeln;
 
     TampilanHasilScan();
 end;
@@ -57,7 +87,7 @@ end;
 procedure TampilanRiwayatBelanja();
 begin
     clrscr;
-    writeln('________________ Program Belanja & Diskon :v _______________________');
+    writeln('________________ Program Belanja :v _______________________');
     writeln('Riwayat Belanja Anda:');
     writeln;
 
@@ -65,10 +95,14 @@ begin
         writeln('Belum ada barang yang discan.')
     else
     begin
-        for i := 1 to jumlahBarang do
+        for i := 0 to jumlahBarang - 1 do
         begin
-            writeln('Barang ', i , ': ', Keranjang[i].nama, ' - Rp', Keranjang[i].harga);
+            writeln('Barang ', i + 1 , ': ', Keranjang[i].nama, 
+                    ' - Jumlah: ', Keranjang[i].Jumlah, 
+                    ' - Harga Satuan: Rp', Keranjang[i].harga,
+                    ' - Subtotal: Rp', Keranjang[i].subtotal);
         end;
+        writeln;
         writeln('Total Harga: Rp', total);
     end;
 
@@ -79,10 +113,10 @@ end;
 
 begin
     jumlahBarang := 0; 
-    total := 0;        
+    total := 0;
     repeat
         clrscr;
-        writeln('________________ Program Belanja & Diskon :v _______________________');
+        writeln('________________ Program Belanja :v _______________________');
         writeln;
         writeln('1. SCAN BARANG BELANJAAN');
         writeln('2. RIWAYAT BELANJA');
