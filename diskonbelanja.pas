@@ -10,10 +10,11 @@ type
     end;
 
 var
-    Keranjang: array of TBarang;
+    KeranjangSementara: array of TBarang; // Barang yang di-scan pada sesi sekarang
+    RiwayatKeranjang: array of TBarang;  // Riwayat semua barang yang pernah di-scan
     jumlahBarang: integer;
     pilihan, total, diskon15, diskon5, totalDiskon, totalJumlahBarang: longint;
-    i: integer;
+    i, offset: integer;
 
 // Menampilkan hasil scan belanjaan, termasuk diskon dan total harga
 procedure TampilanHasilScan();
@@ -31,11 +32,11 @@ begin
     for i := 0 to jumlahBarang - 1 do
     begin
         writeln('| ', i + 1:2, ' | ', 
-                copy(Keranjang[i].nama, 1, 15):15, ' | ', 
-                Keranjang[i].Jumlah:6, ' | ', 
-                Keranjang[i].harga:12, ' | ', 
-                Keranjang[i].subtotal:9, ' |');
-        totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah; // Menambah jumlah barang total
+                copy(KeranjangSementara[i].nama, 1, 15):15, ' | ', 
+                KeranjangSementara[i].Jumlah:6, ' | ', 
+                KeranjangSementara[i].harga:12, ' | ', 
+                KeranjangSementara[i].subtotal:9, ' |');
+        totalJumlahBarang := totalJumlahBarang + KeranjangSementara[i].Jumlah; // Menambah jumlah barang total
     end;
 
     writeln('------------------------------------------------------------');
@@ -74,6 +75,8 @@ end;
 
 // Proses scan barang, termasuk input jumlah, nama, harga, dan validasi harga
 procedure TampilanScanBarang();
+var
+    barangbaru: integer;
 begin
     clrscr;
     writeln('________________ SCAN BARANG ;v _______________________');
@@ -81,26 +84,26 @@ begin
     writeln('Diskon 15% Jika total harga > Rp500.000');
     writeln('Diskon 5% Jika jumlah barang >= 5');
     write('Masukkan Jumlah Barang Belanjaan (Input -1 untuk ke menu utama): ');
-    readln(jumlahBarang);
+    readln(barangbaru);
 
-    if jumlahBarang = -1 then
+    if barangbaru = -1 then
         exit;
 
-    setlength(Keranjang, jumlahBarang);
+    setlength(KeranjangSementara, barangbaru);
     total := 0;
 
-    for i := 0 to jumlahBarang - 1 do
+    for i := 0 to barangbaru - 1 do
     begin
         writeln('Barang ke-', i + 1);
         write('Masukkan Nama Barang: ');
-        readln(Keranjang[i].nama);
+        readln(KeranjangSementara[i].nama);
         write('Masukkan Jumlah Barang: ');
-        readln(Keranjang[i].Jumlah);
+        readln(KeranjangSementara[i].Jumlah);
         write('Masukkan Harga Barang: ');
-        readln(Keranjang[i].harga);
+        readln(KeranjangSementara[i].harga);
 
     // Validasi harga barang
-        if Keranjang[i].harga < 100 then 
+        if KeranjangSementara[i].harga < 100 then 
         begin
             write('Mohon Masukkan Harga Barang dengan benar ');
             writeln;
@@ -111,74 +114,76 @@ begin
         else
         begin
         // Menghitung subtotal
-        Keranjang[i].subtotal := Keranjang[i].harga * Keranjang[i].Jumlah;
+        KeranjangSementara[i].subtotal := KeranjangSementara[i].harga * KeranjangSementara[i].Jumlah;
 
         // Menambahkan ke total
-        total := total + Keranjang[i].subtotal;
+        total := total + KeranjangSementara[i].subtotal;
         end;
     end;
 
+    // Menyimpan data ke riwayat
+    offset := length(RiwayatKeranjang);
+    setlength(RiwayatKeranjang, offset + barangBaru);
+    for i := 0 to barangBaru - 1 do
+        RiwayatKeranjang[offset + i] := KeranjangSementara[i];
+
+    jumlahBarang := barangBaru;
     TampilanHasilScan(); // Panggil prosedur untuk menampilkan hasil scan
 end;
 
 // Menampilkan riwayat belanja
 procedure TampilanRiwayatBelanja();
+var
+    diskonBarang, hargaSetelahDiskon: longint;
 begin
     clrscr;
     writeln('________________ RIWAYAT BELANJA :v _______________________');
     writeln('Riwayat Belanja Anda:');
     writeln;
 
-    if jumlahBarang = 0 then
-        writeln('Belum ada barang yang discan.')
+    if length(RiwayatKeranjang) = 0 then
+    begin
+        writeln('Belum ada barang yang discan.');
+    end
     else
     begin
         totalJumlahBarang := 0;
 
         // Header tabel untuk barang
-        writeln('------------------------------------------------------------');
-        writeln('| No | Nama Barang      | Jumlah | Harga Satuan | Subtotal |');
-        writeln('------------------------------------------------------------');
+         writeln('--------------------------------------------------------------------------------------------------');
+        writeln('| No | Nama Barang      | Jumlah | Harga Satuan | Subtotal | Diskon    | Setelah Diskon     |');
+        writeln('--------------------------------------------------------------------------------------------------');
 
-        for i := 0 to jumlahBarang - 1 do
+        for i := 0 to length(RiwayatKeranjang) - 1 do
         begin
+            // Menghitung diskon per barang
+            diskonBarang := 0;
+            hargaSetelahDiskon := RiwayatKeranjang[i].subtotal;
+
+            // Hitung diskon 15% jika total harga > Rp 500.000
+            if total > 500000 then
+                diskonBarang := diskonBarang + (RiwayatKeranjang[i].subtotal * 15 div 100);
+
+            // Hitung diskon 5% jika jumlah barang >= 5
+            if totalJumlahBarang >= 5 then
+                diskonBarang := diskonBarang + (RiwayatKeranjang[i].subtotal * 5 div 100);
+
+            hargaSetelahDiskon := RiwayatKeranjang[i].subtotal - diskonBarang;
+
             writeln('| ', i + 1:2, ' | ', 
-                    copy(Keranjang[i].nama, 1, 15):15, ' | ', 
-                    Keranjang[i].Jumlah:6, ' | ', 
-                    Keranjang[i].harga:12, ' | ', 
-                    Keranjang[i].subtotal:9, ' |');
-            totalJumlahBarang := totalJumlahBarang + Keranjang[i].Jumlah;
+                    copy(RiwayatKeranjang[i].nama, 1, 15):15, ' | ', 
+                    RiwayatKeranjang[i].Jumlah:6, ' | ', 
+                    RiwayatKeranjang[i].harga:12, ' | ', 
+                    RiwayatKeranjang[i].subtotal:9, ' | Rp ', 
+                    diskonBarang:6, ' | Rp ', hargaSetelahDiskon:15, ' |');
+            totalJumlahBarang := totalJumlahBarang + RiwayatKeranjang[i].Jumlah;
         end;
 
-        writeln('------------------------------------------------------------');
+        writeln('--------------------------------------------------------------------------------------------------');
         writeln;
-        writeln('Total Harga: Rp', total);
-
-        // Menghitung diskon
-        diskon15 := 0;
-        diskon5 := 0;
-
-        if total > 500000 then
-            diskon15 := total * 15 div 100;
-        
-        if totalJumlahBarang >= 5 then
-            diskon5 := total * 5 div 100;
-
-        totalDiskon := diskon15 + diskon5;
-
-         // Header tabel untuk perhitungan diskon
-        writeln('------------------------------------------------------------');
-        writeln('| Diskon           | Jumlah Diskon | Harga Setelah Diskon |');
-        writeln('------------------------------------------------------------');
-        writeln('| Diskon 15%       | Rp ', diskon15:12, ' | Rp ', total - diskon15:15, ' |');
-        writeln('| Diskon 5%        | Rp ', diskon5:12, ' | Rp ', total - diskon5:15, ' |');
-        writeln('------------------------------------------------------------');
-        writeln('| Total Diskon     | Rp ', totalDiskon:12, ' | Rp ', total - totalDiskon:15, ' |');
-        writeln('------------------------------------------------------------');
-        writeln;
+        writeln('Total Barang: ', totalJumlahBarang);
     end;
 
-    writeln('Total Barang Belanjaan: ', totalJumlahBarang);
     writeln;
     write('Tekan Enter untuk kembali ke menu utama...');
     readln;
@@ -187,10 +192,7 @@ end;
 // Membersihkan seluruh riwayat belanja
 procedure BersihkanRiwayatBelanja();
 begin
-    jumlahBarang := 0;
-    total := 0;
-    totalJumlahBarang := 0;
-    setlength(Keranjang, 0); // Mengosongkan array
+    setlength(RiwayatKeranjang, 0);
     writeln('Riwayat belanja telah dibersihkan.');
     writeln('Tekan Enter untuk kembali ke menu utama...');
     readln;
